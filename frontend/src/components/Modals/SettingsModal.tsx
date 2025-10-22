@@ -72,7 +72,10 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
         cvPath: profile.cvPath || '',
       });
 
-      setAvatar(profile.avatar || `https://ui-avatars.com/api/?name=${profile.prenom}+${profile.nom}&background=random`);
+      const avatarUrl = profile.avatar
+        ? (profile.avatar.startsWith('http') ? profile.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}${profile.avatar}`)
+        : '';
+      setAvatar(avatarUrl);
     } catch (err) {
       console.error('Erreur de chargement du profil:', err);
     }
@@ -358,11 +361,27 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 mb-4">
           <div className="flex items-center space-x-6 mb-6">
             <div className="relative">
-              <img
-                src={tempAvatar || avatar}
-                alt="Profile"
-                className="h-28 w-28 rounded-full object-cover border-4 border-orange-200 dark:border-orange-700 shadow-lg"
-              />
+              {tempAvatar || avatar ? (
+                <img
+                  src={tempAvatar || avatar}
+                  alt="Profile"
+                  className="h-28 w-28 rounded-full object-cover border-4 border-orange-200 dark:border-orange-700 shadow-lg"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent && !parent.querySelector('.initials-fallback')) {
+                      const initialsDiv = document.createElement('div');
+                      initialsDiv.className = 'initials-fallback h-28 w-28 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-3xl font-bold border-4 border-orange-200 dark:border-orange-700 shadow-lg';
+                      initialsDiv.textContent = `${formData.prenom[0] || ''}${formData.nom[0] || ''}`.toUpperCase() || 'U';
+                      parent.insertBefore(initialsDiv, e.currentTarget);
+                    }
+                  }}
+                />
+              ) : (
+                <div className="h-28 w-28 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-3xl font-bold border-4 border-orange-200 dark:border-orange-700 shadow-lg">
+                  {`${formData.prenom[0] || ''}${formData.nom[0] || ''}`.toUpperCase() || 'U'}
+                </div>
+              )}
               {pendingAvatarFile && (
                 <div className="absolute -top-2 -right-2 bg-green-500 text-white p-1 rounded-full">
                   <Eye className="h-4 w-4" />
@@ -437,9 +456,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                       validationErrors.nom ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                     }`}
                   />
-                  {validationErrors.nom && (
-                    <p className="text-red-500 text-sm mt-1">{validationErrors.nom}</p>
-                  )}
+                  <div className="h-5 mt-1">
+                    {validationErrors.nom && (
+                      <p className="text-red-500 text-sm">{validationErrors.nom}</p>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -454,9 +475,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                       validationErrors.prenom ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                     }`}
                   />
-                  {validationErrors.prenom && (
-                    <p className="text-red-500 text-sm mt-1">{validationErrors.prenom}</p>
-                  )}
+                  <div className="h-5 mt-1">
+                    {validationErrors.prenom && (
+                      <p className="text-red-500 text-sm">{validationErrors.prenom}</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -515,9 +538,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                       }`}
                     />
                   </div>
-                  {validationErrors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
-                  )}
+                  <div className="h-5 mt-1">
+                    {validationErrors.phone && (
+                      <p className="text-red-500 text-sm">{validationErrors.phone}</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -726,9 +751,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                 passwordErrors.currentPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
               }`}
             />
-            {passwordErrors.currentPassword && (
-              <p className="text-red-500 text-sm mt-1">{passwordErrors.currentPassword}</p>
-            )}
+            <div className="h-5 mt-1">
+              {passwordErrors.currentPassword && (
+                <p className="text-red-500 text-sm">{passwordErrors.currentPassword}</p>
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -748,9 +775,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                   passwordErrors.newPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
-              {passwordErrors.newPassword && (
-                <p className="text-red-500 text-sm mt-1">{passwordErrors.newPassword}</p>
-              )}
+              <div className="h-5 mt-1">
+                {passwordErrors.newPassword && (
+                  <p className="text-red-500 text-sm">{passwordErrors.newPassword}</p>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -768,9 +797,11 @@ export default function SettingsModal({ isOpen, onClose, type }: SettingsModalPr
                   passwordErrors.confirmPassword ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
-              {passwordErrors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{passwordErrors.confirmPassword}</p>
-              )}
+              <div className="h-5 mt-1">
+                {passwordErrors.confirmPassword && (
+                  <p className="text-red-500 text-sm">{passwordErrors.confirmPassword}</p>
+                )}
+              </div>
             </div>
           </div>
 

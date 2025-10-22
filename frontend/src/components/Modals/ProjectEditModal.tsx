@@ -167,9 +167,11 @@ export default function ProjectEditModal({ project, isOpen, onClose, onSuccess }
               }`}
               placeholder="Ex: Application mobile e-commerce"
             />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
+            </div>
           </div>
 
           <div>
@@ -183,9 +185,11 @@ export default function ProjectEditModal({ project, isOpen, onClose, onSuccess }
               }`}
               placeholder="Décrivez les objectifs et fonctionnalités du projet..."
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.description && (
+                <p className="text-red-500 text-sm">{errors.description}</p>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,9 +206,11 @@ export default function ProjectEditModal({ project, isOpen, onClose, onSuccess }
                   errors.startDate ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
-              {errors.startDate && (
-                <p className="text-red-500 text-sm mt-1">{errors.startDate}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.startDate && (
+                  <p className="text-red-500 text-sm">{errors.startDate}</p>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -219,9 +225,11 @@ export default function ProjectEditModal({ project, isOpen, onClose, onSuccess }
                   errors.endDate ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
-              {errors.endDate && (
-                <p className="text-red-500 text-sm mt-1">{errors.endDate}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.endDate && (
+                  <p className="text-red-500 text-sm">{errors.endDate}</p>
+                )}
+              </div>
             </div>
           </div>
 

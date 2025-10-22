@@ -137,9 +137,11 @@ export default function TaskFormModal({ isOpen, onClose, onSubmit, projectId }: 
               }`}
               placeholder="Ex: Créer la page de connexion"
             />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">{errors.title}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
+            </div>
           </div>
 
           <div>
@@ -194,9 +196,11 @@ export default function TaskFormModal({ isOpen, onClose, onSubmit, projectId }: 
                   errors.dueDate ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
               />
-              {errors.dueDate && (
-                <p className="text-red-500 text-sm mt-1">{errors.dueDate}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.dueDate && (
+                  <p className="text-red-500 text-sm">{errors.dueDate}</p>
+                )}
+              </div>
             </div>
           </div>
 

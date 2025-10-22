@@ -22,8 +22,10 @@ export default function Settings() {
     const loadProfile = async () => {
       try {
         const profile = await userService.getCurrentProfile();
-        const avatar = profile.avatar || `https://ui-avatars.com/api/?name=${profile.prenom}+${profile.nom}&background=random`;
-        setProfileImage(avatar);
+        const avatarUrl = profile.avatar
+          ? (profile.avatar.startsWith('http') ? profile.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}${profile.avatar}`)
+          : '';
+        setProfileImage(avatarUrl);
         setFullName(`${profile.prenom} ${profile.nom}`);
         setRole(profile.role || 'Utilisateur');
       } catch (err) {
@@ -84,11 +86,13 @@ export default function Settings() {
   const handleProfileUpdated = async () => {
     try {
       const profile = await userService.getCurrentProfile();
-      const avatar = profile.avatar || `https://ui-avatars.com/api/?name=${profile.prenom}+${profile.nom}&background=random`;
-      setProfileImage(avatar);
+      const avatarUrl = profile.avatar
+        ? (profile.avatar.startsWith('http') ? profile.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}${profile.avatar}`)
+        : '';
+      setProfileImage(avatarUrl);
       setFullName(`${profile.prenom} ${profile.nom}`);
       setRole(profile.role || 'Utilisateur');
-      updateProfile({ avatar });
+      updateProfile({ avatar: avatarUrl });
     } catch (err) {
       console.error('Erreur lors de la mise à jour du profil:', err);
     }
@@ -153,11 +157,27 @@ export default function Settings() {
           <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Profil</h3>
           <div className="flex items-center space-x-6">
             <div className="relative">
-              <img
-                src={tempImageUrl || profileImage}
-                alt="Profile"
-                className="h-24 w-24 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
-              />
+              {tempImageUrl || profileImage ? (
+                <img
+                  src={tempImageUrl || profileImage}
+                  alt="Profile"
+                  className="h-24 w-24 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent && !parent.querySelector('.initials-fallback')) {
+                      const initialsDiv = document.createElement('div');
+                      initialsDiv.className = 'initials-fallback h-24 w-24 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-2xl font-bold border-4 border-gray-200 dark:border-gray-700';
+                      initialsDiv.textContent = fullName.split(' ').map(n => n[0]).join('').toUpperCase() || 'U';
+                      parent.insertBefore(initialsDiv, e.currentTarget);
+                    }
+                  }}
+                />
+              ) : (
+                <div className="h-24 w-24 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-2xl font-bold border-4 border-gray-200 dark:border-gray-700">
+                  {fullName.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                </div>
+              )}
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full shadow-lg transition-colors"

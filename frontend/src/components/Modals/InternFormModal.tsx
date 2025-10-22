@@ -245,11 +245,13 @@ export default function InternFormModal({
                   }`}
                   placeholder={field === "prenom" ? "Ex: Jean" : "Ex: Dupont"}
                 />
-                {(errors as any)[field] && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {(errors as any)[field]}
-                  </p>
-                )}
+                <div className="h-5 mt-1">
+                  {(errors as any)[field] && (
+                    <p className="text-red-500 text-sm">
+                      {(errors as any)[field]}
+                    </p>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -272,9 +274,11 @@ export default function InternFormModal({
                 }`}
                 placeholder="jean.dupont@email.com"
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+              </div>
             </div>
 
             <div>
@@ -301,9 +305,11 @@ export default function InternFormModal({
                   placeholder="Ex: 321234567"
                 />
               </div>
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone}</p>
+                )}
+              </div>
             </div>
           </div>
 
@@ -324,9 +330,11 @@ export default function InternFormModal({
               }`}
               placeholder="Ex: Université Mohammed V"
             />
-            {errors.school && (
-              <p className="text-red-500 text-sm mt-1">{errors.school}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.school && (
+                <p className="text-red-500 text-sm">{errors.school}</p>
+              )}
+            </div>
           </div>
 
           {/* Département */}
@@ -351,9 +359,11 @@ export default function InternFormModal({
                 </option>
               ))}
             </select>
-            {errors.departement && (
-              <p className="text-red-500 text-sm mt-1">{errors.departement}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.departement && (
+                <p className="text-red-500 text-sm">{errors.departement}</p>
+              )}
+            </div>
           </div>
 
           {/* Encadreur */}
@@ -381,9 +391,11 @@ export default function InternFormModal({
                 </option>
               ))}
             </select>
-            {errors.encadreurId && (
-              <p className="text-red-500 text-sm mt-1">{errors.encadreurId}</p>
-            )}
+            <div className="h-5 mt-1">
+              {errors.encadreurId && (
+                <p className="text-red-500 text-sm">{errors.encadreurId}</p>
+              )}
+            </div>
           </div>
 
           {/* Dates */}
@@ -404,11 +416,13 @@ export default function InternFormModal({
                       : "border-gray-300 dark:border-gray-600"
                   }`}
                 />
-                {(errors as any)[field] && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {(errors as any)[field]}
-                  </p>
-                )}
+                <div className="h-5 mt-1">
+                  {(errors as any)[field] && (
+                    <p className="text-red-500 text-sm">
+                      {(errors as any)[field]}
+                    </p>
+                  )}
+                </div>
               </div>
             ))}
           </div>

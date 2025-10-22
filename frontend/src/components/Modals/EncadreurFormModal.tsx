@@ -193,8 +193,10 @@ export default function EncadreurFormModal({ isOpen, onClose, encadreurId }: Enc
                     }`}
                     placeholder="Jean"
                   />
+                </div>
+                <div className="h-5 mt-1">
                   {errors.prenom && (
-                    <p className="text-red-500 text-sm mt-1">{errors.prenom}</p>
+                    <p className="text-red-500 text-sm">{errors.prenom}</p>
                   )}
                 </div>
               </div>
@@ -215,8 +217,10 @@ export default function EncadreurFormModal({ isOpen, onClose, encadreurId }: Enc
                     }`}
                     placeholder="Dupont"
                   />
+                </div>
+                <div className="h-5 mt-1">
                   {errors.nom && (
-                    <p className="text-red-500 text-sm mt-1">{errors.nom}</p>
+                    <p className="text-red-500 text-sm">{errors.nom}</p>
                   )}
                 </div>
               </div>
@@ -239,8 +243,10 @@ export default function EncadreurFormModal({ isOpen, onClose, encadreurId }: Enc
                   } ${encadreurId ? 'cursor-not-allowed opacity-60' : ''}`}
                   placeholder="jean.dupont@company.com"
                 />
+              </div>
+              <div className="h-5 mt-1">
                 {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-sm">{errors.email}</p>
                 )}
               </div>
               {encadreurId && (
@@ -273,9 +279,11 @@ export default function EncadreurFormModal({ isOpen, onClose, encadreurId }: Enc
                   placeholder="Ex: 321234567"
                 />
               </div>
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-              )}
+              <div className="h-5 mt-1">
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone}</p>
+                )}
+              </div>
             </div>
 
             <div>

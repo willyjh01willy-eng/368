@@ -57,9 +57,10 @@ export default function Header({ onNavigate }: HeaderProps) {
     const loadProfile = async () => {
       try {
         const profile = await userService.getCurrentProfile();
-        setProfileImage(
-          profile.avatar || ''
-        );
+        const avatarUrl = profile.avatar
+          ? (profile.avatar.startsWith('http') ? profile.avatar : `${import.meta.env.VITE_API_URL || 'http://localhost:8080'}${profile.avatar}`)
+          : '';
+        setProfileImage(avatarUrl);
         setFullName(`${profile.prenom} ${profile.nom}`);
         setRole(profile.role || 'Utilisateur');
       } catch (err) {
@@ -214,12 +215,20 @@ export default function Header({ onNavigate }: HeaderProps) {
 
             {/* Profil avec avatar + initiales si null */}
             <div className="flex items-center space-x-4">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center overflow-hidden text-white font-semibold">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center overflow-hidden text-white font-semibold">
                 {profileImage ? (
                   <img
                     src={profileImage}
                     alt="Avatar"
                     className="h-10 w-10 object-cover rounded-full"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.innerHTML = `<span class="text-white font-semibold">${fullName
+                        .split(' ')
+                        .map(name => name[0])
+                        .join('')
+                        .toUpperCase() || 'U'}</span>`;
+                    }}
                   />
                 ) : (
                   <span>
@@ -232,9 +241,9 @@ export default function Header({ onNavigate }: HeaderProps) {
                 )}
               </div>
 
-              <div className="flex flex-col text-sm">
+              <div className="hidden md:flex flex-col text-sm">
                 <div className="font-medium text-gray-900 dark:text-white">{fullName || 'Utilisateur'}</div>
-                <div className="text-gray-500 dark:text-gray-400">{getRoleLabel(role) }</div>
+                <div className="text-gray-500 dark:text-gray-400">{getRoleLabel(role)}</div>
               </div>
             </div>
 
